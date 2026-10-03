@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ProjectTwin | Project Similarity Detection</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .header {
+            background: #172554;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #172554;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        textarea {
+            height: 140px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .result {
+            border: 1px solid #ddd;
+            padding: 18px;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+        
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .similarity {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .similarity-bar {
+            width: 100%;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            margin-top: 12px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .similarity-fill {
+            height: 100%;
+            background: #2563eb;
+            border-radius: 10px;
+        }
+
+        .warning {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff7ed;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .summary {
+    margin-top: 20px;
+    padding: 18px;
+    background: #eff6ff;
+    border-left: 5px solid #2563eb;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
+.summary p {
+    margin-top: 10px;
+    color: #555;
+    font-size: 14px;
+}
+.add-project-link {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 18px;
+    background: white;
+    color: #172554;
+    text-decoration: none;
+    border-radius: 7px;
+    font-weight: bold;
+}
+.navigation {
+    margin-top: 18px;
+}
+
+.navigation a {
+    display: inline-block;
+    padding: 10px 18px;
+    margin: 5px;
+    background: white;
+    color: #172554;
+    text-decoration: none;
+    border-radius: 7px;
+    font-weight: bold;
+}
+
+.navigation a:hover {
+    background: #e5e7eb;
+}
+.add-project-link:hover {
+    background: #e5e7eb;
+}
+
+    </style>
+</head>
+
+<body>
+
+   <div class="header">
+    <h1>ProjectTwin</h1>
+    <p>Project Similarity Detection System</p>
+
+    <div class="navigation">
+<a href="/dashboard">Dashboard</a>
+        <a href="/add-project">
+            + Add Project
+        </a>
+        <a href="/dashboard">Dashboard</a>
+
+        <a href="/projects">
+            View Projects
+        </a>
+
+    </div>
+</div>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Check Your Project</h2>
+
+            <form method="POST">
+
+                <label for="title">Project Title</label>
+
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Enter your project title"
+                    required
+                >
+
+                <label for="description">Project Description</label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Describe your project..."
+                    required
+                ></textarea>
+
+                <button type="submit">
+                    Check Project Similarity
+                </button>
+
+            </form>
+        </div>
+
+        {% if new_project %}
+
+        <div class="card">
+<h2>Similarity Results</h2>
+
+<p>
+    <strong>Submitted Project:</strong>
+    {{ new_project.title }}
+</p>
+
+{% if results %}
+
+<div class="summary">
+    <strong>Most Similar Existing Project:</strong>
+    {{ results[0].title }}
+
+    <br><br>
+
+    <strong>Similarity:</strong>
+    {{ "%.2f"|format(results[0].similarity) }}%
+
+    <p>
+        This result represents textual similarity based on the
+        current TF-IDF comparison.
+    </p>
+</div>
+
+{% endif %}
+
+            {% for result in results %}
+
+            <div class="result">
+
+                <div class="result-title">
+                    {{ result.title }}
+                </div>
+                <p class="result-department">
+    Department: {{ result.department }}
+</p>
+
+                <div class="similarity">
+
+                    {{ "%.2f"|format(result.similarity) }}% Similarity
+
+                    <div class="similarity-bar">
+                        <div
+    class="similarity-fill"
+    data-width="{{ result.similarity }}">
+</div>
+                    </div>
+
+                    {% if result.similarity >= 70 %}
+                        <span>— High Similarity</span>
+                    {% elif result.similarity >= 40 %}
+                        <span>— Medium Similarity</span>
+                    {% else %}
+                        <span>— Low Similarity</span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+            <div class="warning">
+                <strong>Note:</strong>
+                Similarity indicates textual similarity between projects.
+                It does not by itself prove plagiarism or copying.
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+    <script>
+    document.querySelectorAll(".similarity-fill").forEach(function (bar) {
+        bar.style.width = bar.dataset.width + "%";
+    });
+</script>
+{% if results %}
+<div class="summary-card">
+
+    <h2>Similarity Report</h2>
+
+    <p>
+        <strong>Submitted Project:</strong>
+        {{ new_project.title }}
+    </p>
+
+    <p>
+        <strong>Highest Matching Project:</strong>
+        {{ results[0].title }}
+    </p>
+
+    <p>
+        <strong>Similarity:</strong>
+        {{ "%.2f"|format(results[0].similarity) }}%
+    </p>
+
+    {% if results[0].similarity >= 70 %}
+        <p><strong>Status:</strong> High textual similarity</p>
+    {% elif results[0].similarity >= 40 %}
+        <p><strong>Status:</strong> Moderate textual similarity</p>
+    {% else %}
+        <p><strong>Status:</strong> Low textual similarity</p>
+    {% endif %}
+
+    <p class="note">
+        This score indicates textual similarity according to the algorithm.
+        It does not by itself prove plagiarism.
+    </p>
+    <form method="POST" action="/download-report">
+
+    <input type="hidden"
+           name="title"
+           value="{{ new_project.title }}">
+
+    <input type="hidden"
+           name="description"
+           value="{{ new_project.description }}">
+
+    <input type="hidden"
+           name="similarity_title"
+           value="{{ results[0].title }}">
+
+    <input type="hidden"
+           name="similarity_score"
+           value="{{ '%.2f'|format(results[0].similarity) }}">
+
+    <button type="submit">
+        Download PDF Report
+    </button>
+
+</form>
+
+</div>
+{% endif %}
+
+</body>
+
+</html>

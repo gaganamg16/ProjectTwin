@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ProjectTwin | Existing Projects</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .header {
+            background: #172554;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            color: #172554;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .project-id {
+            color: #2563eb;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .buttons {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 18px;
+            margin: 5px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+        .delete-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 9px 15px;
+    background: #dc2626;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.delete-button:hover {
+    background: #b91c1c;
+}
+.edit-button {
+    display: inline-block;
+    margin-top: 15px;
+    margin-left: 8px;
+    padding: 9px 15px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.edit-button:hover {
+    background: #1d4ed8;
+}
+    </style>
+    <style>
+
+.navbar {
+    background: #111827;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+.clear-button {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #6b7280;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.clear-button:hover {
+    background: #4b5563;
+}
+
+</style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>ProjectTwin</h1>
+        <h1>Projects</h1>
+
+<p class="project-count">
+    Showing {{ projects|length }} project{% if projects|length != 1 %}s{% endif %}
+</p>
+    <form method="GET" action="/projects" class="filter-form">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search projects..."
+        value="{{ search }}"
+    >
+
+    <select name="department" id="department">
+        <option value="">All Departments</option>
+        <option value="CSE" {% if selected_department == "CSE" %}selected{% endif %}>CSE</option>
+        <option value="ISE" {% if selected_department == "ISE" %}selected{% endif %}>ISE</option>
+        <option value="ECE" {% if selected_department == "ECE" %}selected{% endif %}>ECE</option>
+        <option value="EEE" {% if selected_department == "EEE" %}selected{% endif %}>EEE</option>
+        <option value="ME" {% if selected_department == "ME" %}selected{% endif %}>ME</option>
+    </select>
+
+    <button type="submit">Search</button>
+    <a href="/projects" class="clear-button">Clear</a>
+
+</form>
+
+    <label for="department">Filter by Department</label>
+
+    <select name="department" id="department">
+
+    <option value="" {% if not selected_department %}selected{% endif %}>
+        All Departments
+    </option>
+
+    <option value="CSE" {% if selected_department == "CSE" %}selected{% endif %}>
+        CSE
+    </option>
+
+    <option value="ISE" {% if selected_department == "ISE" %}selected{% endif %}>
+        ISE
+    </option>
+
+    <option value="ECE" {% if selected_department == "ECE" %}selected{% endif %}>
+        ECE
+    </option>
+
+    <option value="EEE" {% if selected_department == "EEE" %}selected{% endif %}>
+        EEE
+    </option>
+
+    <option value="ME" {% if selected_department == "ME" %}selected{% endif %}>
+        ME
+    </option>
+
+</select>
+
+    <button type="submit">Filter</button>
+
+</form>
+        <p>Existing Project Database</p>
+    </div>
+    <p class="project-count">
+    Total Projects: {{ projects|length }}
+</p>
+
+    <div class="container">
+
+        {% if projects %}
+
+            {% for project in projects %}
+
+            <div class="card">
+
+                <div class="project-id">
+                    Project ID: {{ project[0] }}
+                </div>
+
+                <h2>{{ project[1] }}</h2>
+
+<p>
+    {{ project[2] }}
+</p>
+<p><strong>Department:</strong> {{ project[3] }}</p>
+<a href="/dashboard">Dashboard</a>
+<a href="/delete-project/{{ project[0] }}"
+   class="delete-button">
+    Delete Project
+</a>
+<a href="/edit-project/{{ project[0] }}"
+   class="edit-button">
+    Edit Project
+</a>
+
+                <p>
+                    {{ project[2] }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="card">
+                <h2>No Projects Found</h2>
+                <p>
+                    There are currently no projects in the database.
+                </p>
+            </div>
+
+        {% endif %}
+
+        <div class="buttons">
+
+            <a href="/" class="button">
+                Check Similarity
+            </a>
+
+            <a href="/add-project" class="button">
+                Add Project
+            </a>
+        
+
+        </div>
+
+    </div>
+
+</body>
+<nav class="navbar">
+
+    <div class="logo">
+        ProjectTwin
+    </div>
+
+    <div class="nav-links">
+        <a href="/">Check Similarity</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/projects">Projects</a>
+        <a href="/add-project">Add Project</a>
+    </div>
+
+</nav>
+
+</html>

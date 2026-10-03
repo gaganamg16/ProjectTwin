@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ProjectTwin | Success</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #172554;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            margin: 5px;
+        }
+
+        a:hover {
+            background: #1d4ed8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <div class="icon">✓</div>
+
+        <h1>{{ message }}</h1>
+
+        <p>
+    {{ description }}
+</p>
+
+        <a href="/">Check Similarity</a>
+
+        <a href="/add-project">Add Another Project</a>
+
+    </div>
+
+</body>
+
+</html>

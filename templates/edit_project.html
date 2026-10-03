@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ProjectTwin | Edit Project</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .header {
+            background: #172554;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #172554;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 15px 0 7px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>ProjectTwin</h1>
+        <p>Edit Existing Project</p>
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Update Project</h2>
+
+            <form method="POST">
+
+                <label for="title">Project Title</label>
+
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value="{{ project[1] }}"
+                    required
+                >
+
+                <label for="description">Project Description</label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    required
+                >{{ project[2] }}</textarea>
+                <label for="department">Department</label>
+
+<select name="department" id="department" required>
+    <option value="CSE" {% if project[3] == "CSE" %}selected{% endif %}>CSE</option>
+    <option value="ISE" {% if project[3] == "ISE" %}selected{% endif %}>ISE</option>
+    <option value="ECE" {% if project[3] == "ECE" %}selected{% endif %}>ECE</option>
+    <option value="EEE" {% if project[3] == "EEE" %}selected{% endif %}>EEE</option>
+    <option value="ME" {% if project[3] == "ME" %}selected{% endif %}>ME</option>
+</select>
+
+                <button type="submit">
+                    Update Project
+                </button>
+
+            </form>
+
+            <a href="/projects" class="back">
+                ← Back to Projects
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
