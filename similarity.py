@@ -19,7 +19,7 @@ existing_projects = [
 ]
 
 
-# New project submitted by a student
+# New project submitted by a students
 new_project = {
     "title": "Automated Student Attendance Using Face Recognition",
     "description": "A system that automatically records student attendance using face recognition technology."
